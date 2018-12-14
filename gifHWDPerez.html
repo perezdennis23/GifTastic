@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>TMNT</title>
+    <style type="text/css">
+        button,
+        div,
+        form,
+        input {
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Turtle Search</h1>
+
+        <div id="buttons-view"></div>
+
+        <form id="character-form">
+            <label for="character-input">Add your own Ninja Turtle!</label>
+            <input type="text" id="character-input">
+            <br>
+
+            <input id="add-character" type="submit" value="Turtle Power!">
+        </form>
+
+
+        <div id="character-view"></div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript">
+
+            var characters = ["Leonardo", "Donatello", "Michelangelo ", "Raphael"];
+
+            function displayCharacterInfo() {
+
+                var turtle = $(this).attr("data-characters");
+                var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + characters + "&api_key=lZ9pJ608MIG7j7oian6Ayj723zykqOW2&limit=10";
+
+                $.ajax({
+                    url: queryURL,
+                    method: "GET"
+                })
+                    .then(function (response) {
+                        console.log(response);
+
+
+                        var imageUrl = response.data.image_original_url;
+                        var turtleImage = $("<img>");
+                        turtleImage.attr("src", imageUrl);
+                        turtleImage.attr("alt", "turtle image");
+
+
+                        var turtleDiv = $("<div class='turtle'></div>");
+
+
+                        var rating = data[i].rating;
+
+                        var ratingOne = $("<p>").text("Rating: " + rating);
+
+                        turtleDiv.append(ratingOne);
+
+                        $("#character-view").prepend(turtleImage);
+
+                    });
+
+            }
+
+
+            function renderButtons() {
+
+                $("#buttons-view").empty();
+
+                for (var i = 0; i < characters.length; i++) {
+
+
+                    var a = $("<button>");
+                    a.addClass("turtle-btn");
+
+                    a.attr("data-name", characters[i]);
+                    a.text(characters[i]);
+                    $("#buttons-view").append(a);
+                }
+            };
+
+            $("#add-turtle").on("click", function (event) {
+                event.preventDefault();
+                var turtle = $("#turtle-input").val().trim();
+                characters.push(turtle);
+
+                renderButtons();
+            });
+
+            $(document).on("click", ".turtle-btn", displayCharacterInfo);
+
+            renderButtons();
+        </script>
+    </div>
+</body>
+
+</html>
